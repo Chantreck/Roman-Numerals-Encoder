@@ -1,44 +1,40 @@
+import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 class EncoderTest {
     private val encoder = Encoder()
 
-    @Test
-    fun encoder_EncodeEasyNumber_GetCorrectString() {
-        val number = "327"
-        val result = encoder.encode(number)
-        assertEquals("CCCXXVII", result)
-    }
+    // Позитивные тесты
+    
+    @TestFactory
+    fun encoder_EncodeNumber_GetCorrectString() = listOf(
+        DynamicTest.dynamicTest("encoder_EncodeEasyNumber_GetCorrectString") {
+            assertEquals("CCCXXVII", encoder.encode("327"))
+        },
+        DynamicTest.dynamicTest("encoder_EncodeFours_GetCorrectString") {
+            assertEquals("CDXLIV", encoder.encode("444"))
+        },
+        DynamicTest.dynamicTest("encoder_EncodeSixes_GetCorrectString") {
+            assertEquals("DCLXVI", encoder.encode("666"))
+        },
+        DynamicTest.dynamicTest("encoder_EncodeNines_GetCorrectString") {
+            assertEquals("CMXCIX", encoder.encode("999"))
+        },
+        DynamicTest.dynamicTest("encoder_EncodeHardNumber_GetCorrectString") {
+            assertEquals("MMMDCCCLXXXVIII", encoder.encode("3888"))
+        },
+        DynamicTest.dynamicTest("encoder_EncodeLittleNumber_GetCorrectString") {
+            assertEquals("I", encoder.encode("1"))
+        },
+        DynamicTest.dynamicTest("encoder_EncodeBigNumber_GetCorrectString") {
+            assertEquals("MMMCMXCIX", encoder.encode("3999"))
+        }
+    )
 
-    @Test
-    fun encoder_EncodeFours_GetCorrectString() {
-        val number = "444"
-        val result = encoder.encode(number)
-        assertEquals("CDXLIV", result)
-    }
-
-    @Test
-    fun encoder_EncodeSixes_GetCorrectString() {
-        val number = "666"
-        val result = encoder.encode(number)
-        assertEquals("DCLXVI", result)
-    }
-
-    @Test
-    fun encoder_EncodeNines_GetCorrectString() {
-        val number = "999"
-        val result = encoder.encode(number)
-        assertEquals("CMXCIX", result)
-    }
-
-    @Test
-    fun encoder_EncodeHardNumber_GetCorrectString() {
-        val number = "3888"
-        val result = encoder.encode(number)
-        assertEquals("MMMDCCCLXXXVIII", result)
-    }
+    // Негативные тесты
 
     @Test
     fun encoder_EncodeString_ThrowException() {
