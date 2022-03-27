@@ -13,6 +13,27 @@ class EncoderTest {
     }
 
     @Test
+    fun encoder_EncodeFours_GetCorrectString() {
+        val number = "444"
+        val result = encoder.encode(number)
+        assertEquals("CDXLIV", result)
+    }
+
+    @Test
+    fun encoder_EncodeSixes_GetCorrectString() {
+        val number = "666"
+        val result = encoder.encode(number)
+        assertEquals("DCLXVI", result)
+    }
+
+    @Test
+    fun encoder_EncodeNines_GetCorrectString() {
+        val number = "999"
+        val result = encoder.encode(number)
+        assertEquals("CMXCIX", result)
+    }
+
+    @Test
     fun encoder_EncodeHardNumber_GetCorrectString() {
         val number = "3888"
         val result = encoder.encode(number)
