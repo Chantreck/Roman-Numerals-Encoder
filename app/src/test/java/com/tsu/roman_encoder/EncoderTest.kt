@@ -1,8 +1,10 @@
+package com.tsu.roman_encoder
+
+import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
-import kotlin.test.assertEquals
 
 class EncoderTest {
     private val encoder = Encoder()

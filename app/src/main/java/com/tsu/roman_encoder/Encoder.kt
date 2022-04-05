@@ -1,8 +1,4 @@
-fun main() {
-    val encoder = Encoder()
-    val result = encoder.encode("abc")
-    println(result)
-}
+package com.tsu.roman_encoder
 
 class Encoder {
     private val romanNumbers = mapOf(
