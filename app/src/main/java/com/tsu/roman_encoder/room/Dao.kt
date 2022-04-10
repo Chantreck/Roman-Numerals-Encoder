@@ -7,7 +7,7 @@ import androidx.room.Query
 @Dao
 interface Dao {
     @Query("SELECT output FROM data WHERE input = :input")
-    fun getOutput(input: String): String?
+    fun getOutput(input: String): String
 
     @Insert
     fun insert(row: Entity)

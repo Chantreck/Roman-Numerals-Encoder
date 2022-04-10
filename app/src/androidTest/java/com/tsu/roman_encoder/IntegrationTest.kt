@@ -2,17 +2,28 @@ package com.tsu.roman_encoder
 
 import android.app.Application
 import android.util.Log
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.tsu.roman_encoder.room.Database
 import com.tsu.roman_encoder.room.Entity
+import org.hamcrest.core.Is.`is`
+import org.hamcrest.core.IsNot.not
+import org.hamcrest.core.IsNull.nullValue
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class IntegrationTest {
+    @get:Rule
+    var instantExecutorRule = InstantTaskExecutorRule()
+
     private val appContext = ApplicationProvider.getApplicationContext<Application>()
     private val viewModel = MainViewModel(appContext)
     private val dao = Database.getInstance(appContext).getDao()
@@ -37,30 +48,25 @@ class IntegrationTest {
      в данном случае их создать невозможно из-за приколов андроида
      */
 
+    // Тесты на MainViewModel - модуль прослойки между UI-слоем и Data Layer
+
     @Test
-    fun viewModel_TestWithCorrectNumber() {
+    fun viewModel_WithCorrectNumber() {
         val input = "3888"
 
-        val result = getResult(input)
+        viewModel.getResult(input)
+        val result = viewModel.result.getOrAwaitValue()
 
-        assertEquals("MMMDCCCLXXXVIII", result)
+        assertThat(result, `is`("MMMDCCCLXXXVIII"))
     }
 
     @Test
-    fun viewModel_TestWithIncorrectNumber() {
+    fun viewModel_WithIncorrectNumber() {
         val input = "0"
 
-        val result = getResult(input)
-
-        Log.d("Test", "before assert")
-        assertEquals("Number must be greater than 0", result)
-
-    }
-
-    private fun getResult(input: String): String? {
         viewModel.getResult(input)
+        val result = viewModel.result.getOrAwaitValue()
 
-        Log.d("Test", "before return")
-        return viewModel.result.value
+        assertThat(result, `is`("Number must be greater than 0"))
     }
 }
