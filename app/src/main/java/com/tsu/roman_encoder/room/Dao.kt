@@ -7,8 +7,11 @@ import androidx.room.Query
 @Dao
 interface Dao {
     @Query("SELECT output FROM data WHERE input = :input")
-    suspend fun getOutput(input: String): String
+    fun getOutput(input: String): String?
 
     @Insert
-    suspend fun insert(row: Entity)
+    fun insert(row: Entity)
+
+    @Query("DELETE FROM data")
+    fun clear()
 }

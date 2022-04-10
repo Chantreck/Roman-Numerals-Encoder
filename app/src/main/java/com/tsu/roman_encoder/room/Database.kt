@@ -12,6 +12,6 @@ object Database {
 
     private fun build(context: Context): AppDatabase = Room
         .databaseBuilder(context, AppDatabase::class.java, "currency_db")
-        .fallbackToDestructiveMigration()
+        .allowMainThreadQueries()
         .build()
 }

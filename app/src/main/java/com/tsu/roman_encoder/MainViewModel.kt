@@ -17,30 +17,25 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val result: LiveData<String> get() = _result
 
     fun getResult(input: String) {
-        viewModelScope.launch {
-            val output = dao.getOutput(input)
-            if (output.isNullOrEmpty()) {
-                getResultFromModel(input)
-            } else {
-                _result.value = output
-            }
+        val output = dao.getOutput(input)
+        if (output.isNullOrEmpty()) {
+            getResultFromModel(input)
+        } else {
+            _result.postValue(output)
         }
     }
 
     private fun getResultFromModel(input: String) {
         try {
             val output = encoder.encode(input)
-            _result.value = output
+            _result.postValue(output)
             saveResult(Entity(input, output))
         } catch (e: Exception) {
-            _result.value = e.message
-            return
+            _result.postValue(e.message)
         }
     }
 
     private fun saveResult(data: Entity) {
-        viewModelScope.launch {
-            dao.insert(data)
-        }
+        dao.insert(data)
     }
 }
